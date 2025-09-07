@@ -1,0 +1,33 @@
+# Byte-compiled / cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+fastapi-cifake/
+.venv/
+env/
+venv/
+
+# Databases
+*.db
+*.sqlite3
+
+# Environment variables
+.env
+
+# Model artifacts / checkpoints
+artifacts/*.pth
+artifacts/*.pt
+artifacts/*.ckpt
+
+# Logs
+*.log
+
+# Docker
+*.pid
+*.sock
+*.tmp
+
+backup/
