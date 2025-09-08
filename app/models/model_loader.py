@@ -2,6 +2,7 @@ import torch
 import timm
 import json
 from huggingface_hub import hf_hub_download
+import os
 
 # Device setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -11,11 +12,14 @@ with open("artifacts/labels.json", "r") as f:
     CLASS_NAMES = json.load(f)
 
 def load_model():
+    # Use /tmp (writable in HF Spaces)
+    cache_dir = os.getenv("HF_HOME", "/tmp/huggingface")
+
     # Download model weights from Hugging Face Hub
     model_path = hf_hub_download(
         repo_id="AyaKrc/image-classifier-cifake",  # your HF repo
         filename="best_model.pth",
-        cache_dir="/app/cache"  # ✅ use writable cache dir inside container
+        cache_dir=cache_dir
     )
 
     # Recreate architecture
