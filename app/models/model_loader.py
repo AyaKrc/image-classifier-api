@@ -14,7 +14,8 @@ def load_model():
     # Download model weights from Hugging Face Hub
     model_path = hf_hub_download(
         repo_id="AyaKrc/image-classifier-cifake",  # your HF repo
-        filename="best_model.pth"
+        filename="best_model.pth",
+        cache_dir="/app/cache"  # ✅ use writable cache dir inside container
     )
 
     # Recreate architecture
