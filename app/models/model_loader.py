@@ -7,17 +7,21 @@ import os
 # Device setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Load labels (these stay local, small file)
+# Load labels
 with open("artifacts/labels.json", "r") as f:
     CLASS_NAMES = json.load(f)
 
 def load_model():
-    # Use /tmp (writable in HF Spaces)
-    cache_dir = os.getenv("HF_HOME", "/tmp/huggingface")
+    # ✅ Ensure writable cache dir
+    cache_dir = "/tmp/huggingface"
+    os.makedirs(cache_dir, exist_ok=True)
 
-    # Download model weights from Hugging Face Hub
+    # ✅ Disable Xet storage (forces normal download)
+    os.environ["HF_HUB_DISABLE_XET"] = "1"
+
+    # Download model weights
     model_path = hf_hub_download(
-        repo_id="AyaKrc/image-classifier-cifake",  # your HF repo
+        repo_id="AyaKrc/image-classifier-cifake",  # your repo
         filename="best_model.pth",
         cache_dir=cache_dir
     )
@@ -33,7 +37,5 @@ def load_model():
     state_dict = torch.load(model_path, map_location=device)
     model.load_state_dict(state_dict)
 
-    # Prepare for inference
     model.eval().to(device)
-
     return model, CLASS_NAMES, device
