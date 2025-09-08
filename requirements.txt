@@ -1,8 +1,16 @@
+# Core API
 fastapi
 uvicorn
-torch --index-url https://download.pytorch.org/whl/cpu
-torchvision --index-url https://download.pytorch.org/whl/cpu
-timm
-pillow
 pydantic
 python-multipart
+
+# ML / CV
+# Use CPU wheels for lighter Docker images
+torch==2.0.1+cpu
+torchvision==0.15.2+cpu
+-f https://download.pytorch.org/whl/torch_stable.html
+
+timm
+pillow
+huggingface_hub
+numpy<2
