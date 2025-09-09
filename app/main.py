@@ -3,6 +3,7 @@ import logging
 import csv
 import os
 from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
 from app.routes import predict
 
 # --- Setup logging ---
@@ -53,6 +54,28 @@ async def log_requests(request: Request, call_next):
             ])
 
     return response
+
+
+# --- Homepage ---
+@app.get("/", response_class=HTMLResponse)
+def home():
+    return """
+    <html>
+        <head>
+            <title>AI-Generated Image Detector</title>
+        </head>
+        <body style="font-family: Arial; margin: 2em;">
+            <h1>🚀 Welcome to the AI-Generated Image Detector API</h1>
+            <p>This API helps detect whether an image is AI-generated or real.</p>
+            <h2>Available Endpoints:</h2>
+            <ul>
+                <li><b>Health Check:</b> <a href="/health">/health</a></li>
+                <li><b>Prediction:</b> <code>/predict</code> (POST with an image file)</li>
+            </ul>
+            <p>Check logs and metrics in <code>metrics.csv</code> or the Hugging Face Logs tab.</p>
+        </body>
+    </html>
+    """
 
 
 @app.get("/health")
